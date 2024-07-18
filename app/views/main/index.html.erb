@@ -1,0 +1,10 @@
+<%= button_to 'Login', '/auth/auth0', method: :post, data: { turbo: false } %>
+<br/>
+<%= button_to 'Foo', '/blah', method: :post, data: { turbo: false } %>
+<br/>
+
+<% if @logged_in %>
+  <%= button_to 'Logout', 'auth/logout', method: :get, data: { turbo: false } %>
+<% else %>
+  <%= session[:userinfo] %>
+<% end %>

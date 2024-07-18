@@ -1,0 +1,16 @@
+
+<div class="flex-column flex-start full-width">
+  <div class="flex-row flex-center flex-gap">
+    <%= render "resumes/briefcase" %>
+    <h2 class="faded normal-weight">Experience</h2>
+  </div>
+    <div class="flex-column flex-start full-width flex-gap">
+    <% @work_experiences.each do |experience| %>
+      <div class="flex-column flex-start full-width nobreak">
+        <p><strong><%= experience.organization_name %></strong> <span class="faded"><%= Documents::ResumeGenerationService.format_work_date(experience) %></span></p>
+        <p class="faded"><strong><%= experience.position %></strong><p>
+        <p class="preserve-whitespace top-margin"><%= experience.description %><p>
+      </div>
+    <% end %>
+  </div>
+</div>

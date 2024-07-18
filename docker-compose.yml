@@ -1,0 +1,65 @@
+version: "3.8"
+services:
+  redis:
+    image: "redis:7.2.1"
+    container_name: "skillarc_redis"
+    ports:
+      - "127.0.0.1:6379:6379"
+  postgres:
+    image: "postgres:15.3"
+    container_name: "skillarc_postgres"
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "postgres"
+  puppeteer:
+    tty: true
+    stdin_open: true
+    init: true
+    platform: linux/arm64
+    image: ghcr.io/skillarc-app/puppeteer:latest
+    container_name: "skillarc_puppeteer"
+    ports:
+      - "3002:3002"
+  rails:
+    tty: true
+    stdin_open: true
+    build:
+      dockerfile: server.Dockerfile
+    container_name: "skillarc_server"
+    environment:
+      RUN_ENVIRONMENT: "server"
+    volumes:
+      - .:/app
+    ports:
+      - "3001:3001"
+    depends_on:
+      - postgres
+      - redis
+      - puppeteer
+  sidekq:
+    build:
+      dockerfile: sidekiq.Dockerfile
+    container_name: "skillarc_sidekiq"
+    command: bundle exec sidekiq -C config/local.sidekiq.yml
+    environment:
+      RUN_ENVIRONMENT: "worker"
+      DOCUMENT_STORAGE_STRATEGY: "db_only"
+      DOCUMENT_GENERATION_STRATEGY: "real"
+      DOCUMENT_STORAGE_KIND: "postgres"
+      PUPPETEER_BASE_URL: "http://puppeteer:3002"
+      PUPPETEER_AUTH: "efa0adda-3d57-4924-bba0-d00903b18404"
+      SLACK_GATEWAY_STRATEGY: "fake"
+      KLAVIYO_GATEWAY_STRATEGY: "fake"
+      SMS_GATEWAY_STRATEGY: "fake"
+      REDIS_URL: redis://redis:6379
+      POSTGRES_HOST: 'postgres'
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+      POSTGRES_PORT: 5432
+    volumes:
+      - .:/app
+    depends_on:
+      - postgres
+      - redis

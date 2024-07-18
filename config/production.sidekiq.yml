@@ -1,0 +1,6 @@
+# config/sidekiq.yml
+:concurrency: 1
+:queues:
+  - default
+:redis:
+  url: "redis://redis:6379"

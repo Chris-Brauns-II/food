@@ -1,0 +1,16 @@
+<p>Great news! You have a new applicant for <b><%= @data.employment_title %>!</b></p>
+
+<div>Resume: <%= link_to "#{@data.applicant_first_name} #{@data.applicant_last_name}", "#{ENV['FRONTEND_URL']}/profiles/#{@data.applicant_seeker_id}" %></a></div>
+<div>Phone: <%= @data.applicant_phone_number %></div>
+<div>Email: <%= @data.applicant_email %></div>
+
+<% if @data.certified_by %>
+ <p>This seeker was already certified by <%= @data.certified_by %> from the SkillArc team.<p>
+<% end %>
+
+<p>As always, you can view all your applicants on your <%= link_to "dashboard", "#{ENV['FRONTEND_URL']}/employers/jobs" %></p>
+
+<p>Please feel free to reach out anytime by responding to this email or hannah@skillarc.com with any questions or suggestions!</p>
+
+<p>Thanks,</p>
+<div>The SkillArc Team</div>

@@ -1,0 +1,15 @@
+
+<div class="flex-column full-width flex-center nobreak">
+  <h1 class="serif"><%= "#{@first_name} #{@last_name}" %></h1>
+  <div class="flex-row flex-center flex-gap">
+    <% if @email.present? %>
+      <p>Email: <strong><%= @email %></strong></p>
+    <% end %>
+    <% if @phone_number.present? %>
+      <p>Phone: <strong><%= @phone_number %></strong></p>
+    <% end %>
+  </div>
+  <% if @bio.present? %>
+    <p><%= @bio %></p>
+  <% end %>
+</div>

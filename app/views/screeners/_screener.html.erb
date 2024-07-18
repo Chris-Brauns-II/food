@@ -1,0 +1,9 @@
+
+<div class="flex-column flex-start full-width flex-gap">
+  <% @question_responses.each do |question_response| %>
+    <div class="flex-column flex-start full-width">
+      <h4 class="heavy-weight">Question: <%= question_response.question %></h4>
+      <p class="preserve-whitespace"><%= question_response.response %><p>
+    </div>
+  <% end %>
+</div>

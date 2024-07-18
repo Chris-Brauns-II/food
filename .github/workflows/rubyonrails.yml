@@ -1,0 +1,104 @@
+# This workflow uses actions that are not certified by GitHub.  They are
+# provided by a third-party and are governed by separate terms of service,
+# privacy policy, and support documentation.
+#
+# This workflow will install a prebuilt Ruby version, install dependencies, and
+# run tests and linters.
+name: "Ruby on Rails CI"
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+permissions: read-all
+jobs:
+  test:
+    runs-on:
+      group: organization/Default
+    services:
+      redis:
+        image: "redis:7.2.1-alpine"
+        ports:
+          - "127.0.0.1:6379:6379"
+      postgres:
+        image: postgres:15.3-alpine
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_DB: rails_test
+          POSTGRES_USER: rails
+          POSTGRES_PASSWORD: password
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+      SLACK_GATEWAY_STRATEGY: fake
+      KLAVIYO_GATEWAY_STRATEGY: fake
+      DOCUMENT_GENERATION_STRATEGY: fake
+      DOCUMENT_STORAGE_STRATEGY: db_only
+      DOCUMENT_STORAGE_KIND: postgres
+      SMS_GATEWAY_STRATEGY: fake
+      CAL_COM_WEBHOOK_SECRET_KEY: fake
+      CI: true
+
+    steps:
+      - name: Collect Workflow Telemetry
+        uses: catchpoint/workflow-telemetry-action@v2
+        with:
+          comment_on_pr: false
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Checkout Skillarc GH action
+        uses: actions/checkout@v4
+        with:
+          repository: SkillArc-App/skillarc-ci-action
+          ref: v0.1.4
+          ssh-key: ${{ secrets.SKILLARC_CI_ACTION_ACCESS }}
+          path: .github/actions/skillarc-ci-action
+      - name: Run SkillArc GH action
+        uses: ./.github/actions/skillarc-ci-action
+        with:
+          alert_threshold: 120
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+      # Add or replace dependency steps here
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      # Add or replace database setup steps here
+      - name: Set up database schema
+        run: bin/rails db:schema:load
+      # Add or replace test runners here
+      - name: Run tests
+        run: bundle exec rspec
+
+  lint:
+    runs-on:
+      group: organization/Default
+    steps:
+      - name: Collect Workflow Telemetry
+        uses: catchpoint/workflow-telemetry-action@v2
+        with:
+          comment_on_pr: false
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Checkout Skillarc GH action
+        uses: actions/checkout@v4
+        with:
+          repository: SkillArc-App/skillarc-ci-action
+          ref: v0.1.4
+          ssh-key: ${{ secrets.SKILLARC_CI_ACTION_ACCESS }}
+          path: .github/actions/skillarc-ci-action
+      - name: Run SkillArc GH action
+        uses: ./.github/actions/skillarc-ci-action
+        with:
+          alert_threshold: 120
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+      # Add or replace any other lints here
+      - name: Lint Ruby files
+        run: bundle exec rubocop --parallel

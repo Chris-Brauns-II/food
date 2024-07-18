@@ -1,0 +1,81 @@
+div.alwaysbreak {
+  page-break-before: always;
+}
+div.nobreak:before {
+  clear:both;
+}
+div.nobreak {
+  page-break-inside: avoid;
+}
+
+div {
+  border-color: black;
+  border-width: 1px;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.serif {
+  font-family: serif;
+}
+
+.normal-weight { font-weight: normal; }
+.heavy-weight { font-weight: bold; }
+
+.highlight {
+  background-color: red;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-gap {
+  gap: 20px;
+}
+
+.flex-center {
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-start {
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.flex-end {
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.full-width {
+  display: flex;
+  width: 100%;
+}
+
+.faded {
+  color: #4b4b4b;
+}
+
+p {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0px 0px;
+}
+
+.top-margin {
+  margin-top: 5px;
+}
+
+.preserve-whitespace {
+  white-space: pre-line;
+}

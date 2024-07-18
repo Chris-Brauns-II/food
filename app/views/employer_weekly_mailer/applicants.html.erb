@@ -1,0 +1,148 @@
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td>
+      <%= image_tag "https://blocktrain-app-images.s3.us-east-2.amazonaws.com/logo.png", alt: "SkillArc logo", height: '48', width: '48' %>
+      <h1 class="logo_text">SkillArc</h1>
+    </td>
+  </tr>
+</table>
+
+<div class="section">
+  <h2>Hello!</h2>
+  <p>As a SkillArc partner, we are pleased to provide you with your weekly update on the progress of candidates who have applied to your job postings at <%= @data.employer_name %></p>
+</div>
+
+<div class="new_candidates section">
+  <h2>New Candidates</h2>
+  <p>There are <%= @data.new_applicants.length %> applicant waiting for you.</p>
+  <ul>
+  <% @data.new_applicants.each do |applicant| %>
+    <% if applicant.certified_by %>
+        <li><%= "#{applicant.first_name} #{applicant.last_name}"%> who was certified by <%= applicant.certified_by %></li>
+      <% else %>
+        <li><%= "#{applicant.first_name} #{applicant.last_name}"%></li>
+      <% end %>
+  <% end %>
+  </ul>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td>
+        <div class="button_container">
+          <button>
+            <%= link_to "Review and Contact", "#{ENV['FRONTEND_URL']}/employers/jobs" %>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<div class="section">
+  <h2>Pending Candidates</h2>
+  <p>In addition to the several new candidates this week, you have <%= @data.pending_applicants.length %> past applications still pending.</p>
+  <ul>
+    <% @data.pending_applicants.each do |applicant| %>
+      <% if applicant.certified_by %>
+        <li><%= "#{applicant.first_name} #{applicant.last_name}"%> who was certified by <%= applicant.certified_by %></li>
+      <% else %>
+        <li><%= "#{applicant.first_name} #{applicant.last_name}"%></li>
+      <% end %>
+    <% end %>
+  </ul>
+  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td>
+        <div class="button_container">
+          <button>
+            <%= link_to "Review and Update", "#{ENV['FRONTEND_URL']}/employers/jobs" %>
+          </button>
+        </div>
+      </td>
+    </tr>
+  </table>
+</div>
+
+<hr/>
+
+<div class="footer_container">
+  <div>
+    <p><i>Questions or feedback? Please don't hesitate to respond to this email directly!</i></p>
+    <p><i>Thank you!</i></p>
+    <p><i>Hannah and the SkillArc Team</i></p>
+  </div>
+</div>
+
+<style>
+  a {
+    text-decoration: none;
+    color: white;
+  }
+
+  button {
+    padding: 1rem;
+    background-color: #276749;
+    border: none;
+    color: white;
+    margin-top: 1rem;
+  }
+
+  h1 {
+    margin: 0;
+    font-family: sans-serif;
+    color: #2d3748;
+  }
+
+  h2 {
+    margin: 0;
+    font-family: sans-serif;
+    color: #2d3748;
+  }
+
+  li {
+    font-family: sans-serif;
+    color: #4a5568;
+  }
+
+  p {
+    font-family: sans-serif;
+    color: #4a5568;
+  }
+
+  td {
+    text-align: center;
+  }
+
+  .button_container {
+    display: flex;
+    justify-content: center;
+  }
+
+  .footer_container {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .logo_section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .logo_text {
+    font-family: serif;
+    color: #1c4532;
+  }
+
+  .new_candidates {
+    background-color: #c6f6d5;
+  }
+
+  .section {
+    padding: 1rem;
+  }
+</style>

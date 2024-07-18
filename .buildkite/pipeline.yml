@@ -1,0 +1,11 @@
+steps:
+  - command: "bundle install"
+    name: "Install dependencies"
+  - wait
+  - command: "bundle exec rake db:reset"
+    name: "Migrate database"
+  - wait
+  - command: "bundle exec rspec"
+    name: "Run tests"
+  - command: "bundle exec rubocop"
+    name: "Rubocop"

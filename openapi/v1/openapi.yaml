@@ -1,0 +1,5538 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/admin/attributes":
+    get:
+      summary: get all attributes
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Returns all attributes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    description:
+                      type: string
+                      nullable: true
+                    name:
+                      type: string
+                    set:
+                      type: array
+                      items:
+                        type: string
+                    default:
+                      type: array
+                      items:
+                        type: string
+    post:
+      summary: create an attribute
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Creates an attribute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                set:
+                  type: array
+                  items:
+                    type: string
+                default:
+                  type: array
+                  items:
+                    type: string
+              required:
+              - name
+              - set
+              - default
+  "/admin/attributes/{id}":
+    put:
+      summary: update an attribute
+      tags:
+      - Admin
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '204':
+          description: Updates an attribute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                set:
+                  type: array
+                  items:
+                    type: string
+                default:
+                  type: array
+                  items:
+                    type: string
+    delete:
+      summary: delete an attribute
+      tags:
+      - Admin
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '204':
+          description: Deletes an attribute
+  "/admin/jobs/{id}/job_attributes":
+    post:
+      summary: Create a job attribute
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '201':
+          description: Creates a job attribute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                job_attribute:
+                  type: object
+                  properties:
+                    attribute_id:
+                      type: string
+                      format: uuid
+                    acceptible_set:
+                      type: array
+                      items:
+                        type: string
+                  required:
+                  - attribute_id
+                  - acceptible_set
+              required:
+              - job_attribute
+  "/admin/jobs/{id}/job_attributes/{job_attribute_id}":
+    put:
+      summary: Update a job attribute
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: job_attribute_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '204':
+          description: Updates a job attribute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                job_attribute:
+                  type: object
+                  properties:
+                    acceptible_set:
+                      type: array
+                      items:
+                        type: string
+                  required:
+                  - acceptible_set
+              required:
+              - job_attribute
+    delete:
+      summary: Destroy a job attribute
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: job_attribute_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '204':
+          description: Destroys a job attribute
+  "/admin/jobs":
+    get:
+      summary: Retreives all jobs
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: Retreives all jobs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    category:
+                      type: string
+                    employerId:
+                      type: string
+                      format: uuid
+                    employmentTitle:
+                      type: string
+                    benefitsDescription:
+                      type: string
+                    responsibilitiesDescription:
+                      type: string
+                    requirementsDescription:
+                      type: string
+                    location:
+                      type: string
+                    employmentType:
+                      type: string
+                    employer:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        name:
+                          type: string
+                        bio:
+                          type: string
+                        location:
+                          type: string
+                        logoUrl:
+                          type: string
+                        chatEnabled:
+                          type: boolean
+                        createdAt:
+                          type: string
+                          format: date_time
+                        updatedAt:
+                          type: string
+                          format: date_time
+                    hideJob:
+                      type: boolean
+                    schedule:
+                      type: string
+                    workDays:
+                      type: string
+                    industry:
+                      type: array
+                      items:
+                        type: string
+                    careerPaths:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                          name:
+                            type: string
+                          lower_limit:
+                            type: string
+                          upper_limit:
+                            type: string
+                          createdAt:
+                            type: string
+                            format: date_time
+                          updatedAt:
+                            type: string
+                            format: date_time
+                    desiredCertifications:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: string
+                            format: uuid
+                          name:
+                            type: string
+                          description:
+                            type: string
+                          createdAt:
+                            type: string
+                            format: date_time
+                          updatedAt:
+                            type: string
+                            format: date_time
+                    testimonials:
+                      type: array
+                      items:
+                        type: object
+                    jobPhotos:
+                      type: array
+                      items:
+                        type: object
+                    jobTag:
+                      type: array
+                      items:
+                        type: object
+                    learnedSkills:
+                      type: array
+                      items:
+                        type: object
+                    desiredSkills:
+                      type: array
+                      items:
+                        type: object
+                    createdAt:
+                      type: string
+                      format: date_time
+                    updatedAt:
+                      type: string
+                      format: date_time
+    post:
+      summary: Create a job
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '201':
+          description: Job created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                job:
+                  type: object
+                  properties:
+                    category:
+                      type: string
+                    employment_title:
+                      type: string
+                    employer_id:
+                      type: string
+                    location:
+                      type: string
+                    benefits_description:
+                      type: string
+                    responsibilities_description:
+                      type: string
+                    employment_type:
+                      type: string
+                    schedule:
+                      type: string
+                    work_days:
+                      type: string
+                    requirements_description:
+                      type: string
+                    industry:
+                      type: array
+                      items:
+                        type: string
+              required:
+              - category
+              - employment_title
+              - employer_id
+              - location
+              - benefits_description
+              - responsibilities_description
+              - employment_type
+              - schedule
+              - work_days
+              - requirements_description
+              - industry
+  "/admin/jobs/{id}":
+    get:
+      summary: Show a job
+      tags:
+      - Admin
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: Retreives a job
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/admin_job"
+    put:
+      summary: Update a job
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: Job updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                job:
+                  type: object
+                  properties:
+                    category:
+                      type: string
+                    employment_title:
+                      type: string
+                    employer_id:
+                      type: string
+                    location:
+                      type: string
+                    benefits_description:
+                      type: string
+                    responsibilities_description:
+                      type: string
+                    employment_type:
+                      type: string
+                    schedule:
+                      type: string
+                    work_days:
+                      type: string
+                    requirements_description:
+                      type: string
+                    industry:
+                      type: array
+                      items:
+                        type: string
+              required:
+              - category
+              - employment_title
+              - employer_id
+              - location
+              - benefits_description
+              - responsibilities_description
+              - employment_type
+              - schedule
+              - work_days
+              - requirements_description
+              - industry
+  "/coaches/attributes":
+    get:
+      summary: Get all attributes
+      tags:
+      - Coaches
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Returns all attributes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    description:
+                      type: string
+                      nullable: true
+                    name:
+                      type: string
+                    set:
+                      type: array
+                      items:
+                        type: string
+                    default:
+                      type: array
+                      items:
+                        type: string
+  "/coaches/seekers/{person_id}/attributes":
+    post:
+      summary: Add an attribute
+      tags:
+      - Coaches
+      parameters:
+      - name: person_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Adds an attribute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                attributeId:
+                  type: string
+                  format: uuid
+                values:
+                  type: array
+                  items:
+                    type: string
+              required:
+              - attributesId
+              - name
+              - value
+  "/coaches/seekers/{person_id}/attributes/{id}":
+    put:
+      summary: update an attribute
+      tags:
+      - Coaches
+      parameters:
+      - name: person_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Adds an attribute
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                attributeId:
+                  type: string
+                  format: uuid
+                value:
+                  type: array
+                  items:
+                    type: string
+              required:
+              - attributesId
+              - name
+              - value
+    delete:
+      summary: remove an attribute
+      tags:
+      - Coaches
+      parameters:
+      - name: person_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Removes an attribute
+  "/coaches/contexts":
+    get:
+      summary: Retrieve all contexts
+      tags:
+      - Coaches
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: retrieve all seekers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/coach_seeker_table"
+  "/coaches/contexts/{id}":
+    get:
+      summary: Retrieve a context
+      tags:
+      - Coaches
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '404':
+          description: seeker not found
+        '200':
+          description: retrieve all seekers
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/coach_seeker"
+  "/coaches/contexts/{id}/skill-levels":
+    post:
+      summary: Update a skill level
+      tags:
+      - Seekers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: retrieve all seekers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                level:
+                  type: string
+              required:
+              - level
+  "/coaches/contexts/{id}/assign_coach":
+    post:
+      summary: Update a skill level
+      tags:
+      - Seekers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '404':
+          description: Coach not found
+        '202':
+          description: retrieve all seekers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                coachId:
+                  type: string
+                  format: uuid
+              required:
+              - coachId
+  "/coaches/contexts/{id}/recommend_job":
+    post:
+      summary: Update a skill level
+      tags:
+      - Seekers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: retrieve all seekers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                jobId:
+                  type: string
+                  format: uuid
+              required:
+              - jobId
+  "/coaches/feeds":
+    get:
+      summary: retrieve all feeds
+      tags:
+      - Coaches
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: retrieve all seekers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      format: uuid
+                    contextId:
+                      type: string
+                    description:
+                      type: string
+                    occurredAt:
+                      type: string
+                      format: datetime
+                    seekerEmail:
+                      type: string
+                      format: email
+                  required:
+                  - id
+                  - seekerEmail
+  "/coaches/job_orders":
+    get:
+      summary: Retrieves all job orders
+      tags:
+      - Coaches
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: retrieves job orders
+  "/coaches/job_orders/{id}/recommend":
+    post:
+      summary: Recommends a job order to a seeker
+      tags:
+      - Coaches
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: recommends a job order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                seeker_id:
+                  type: string
+              required:
+              - seeker_id
+  "/coaches/leads":
+    get:
+      summary: Retrieve all leads
+      tags:
+      - Coaches
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: retrieve all seekers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/lead"
+    post:
+      summary: Create new lead
+      tags:
+      - Coaches
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: lead created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lead:
+                  type: object
+                  properties:
+                    leadId:
+                      type: string
+                      format: uuid
+                    email:
+                      type: string
+                      format: email
+                    phoneNumber:
+                      type: string
+                    firstName:
+                      type: string
+                    lastName:
+                      type: string
+              required:
+              - email
+              - phoneNumber
+              - firstName
+              - lastName
+  "/coaches/contexts/{id}/notes":
+    post:
+      summary: create a note
+      tags:
+      - Coaches
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Creates a note
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+                note_id:
+                  type: string
+                  format: uuid
+              required:
+              - note
+  "/coaches/contexts/{id}/notes/{note_id}":
+    put:
+      summary: modify a note
+      tags:
+      - Coaches
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: note_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Creates a note
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+              required:
+              - context_id
+              - note
+    delete:
+      summary: remove a note
+      tags:
+      - Coaches
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: note_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Creates a note
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+              required:
+              - context_id
+              - note
+  "/coaches/contexts/{id}/update_barriers":
+    put:
+      summary: update barriers
+      tags:
+      - Coaches
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Update barriers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                barriers:
+                  type: array
+                  items:
+                    type: string
+              required:
+              - barriers
+  "/coaches/seekers/{id}/certify":
+    post:
+      summary: Certify a seeker
+      tags:
+      - Seekers
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: certifies a seeker
+  "/coaches/tasks":
+    get:
+      summary: get all coach tasks
+      tags:
+      - Coaches
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: context_id
+        in: query
+        format: uuid
+        required: false
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Returns all tasks
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/reminder"
+  "/coaches/tasks/reminders":
+    post:
+      summary: create a reminder
+      tags:
+      - Coaches
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Creates a reminder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reminder:
+                  type: object
+                  properties:
+                    note:
+                      type: string
+                    reminderAt:
+                      type: string
+                      format: date-time
+                    contextId:
+                      type: string
+                      format: uuid
+                required:
+                - reminderAt
+                - note
+              required:
+              - reminder
+  "/coaches/tasks/reminders/{id}/complete":
+    put:
+      summary: complete a reminder
+      tags:
+      - Coaches
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Completes a reminder
+  "/contact/cal_dot_com/webhooks":
+    post:
+      summary: Consume webhook
+      tags:
+      - Contact
+      parameters:
+      - name: X-Cal-Signature-256
+        in: header
+        schema:
+          type: string
+      responses:
+        '403':
+          description: Forbidden
+        '202':
+          description: Accepted
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                triggerEvent:
+                  type: string
+                createdAt:
+                  type: string
+                  format: datetime
+                payload:
+                  type: object
+  "/jobs/{job_id}/desired_certifications":
+    post:
+      summary: Add a desired certification
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Request certification added
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                masterCertificationId:
+                  type: string
+              required:
+              - masterCertificationId
+  "/jobs/{job_id}/desired_certifications/{id}":
+    delete:
+      summary: Removes a desired certification
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: desired skill destroyed
+  "/jobs/{job_id}/desired_skills":
+    post:
+      summary: Create a desired skill
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: desired skill created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                master_skill_id:
+                  type: string
+              required:
+              - master_skill_id
+  "/jobs/{job_id}/desired_skills/{id}":
+    delete:
+      summary: Destroy a desired skill
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: job_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: desired skill destroyed
+  "/documents/resumes":
+    get:
+      summary: Get all resumes
+      tags:
+      - Documents
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: person_id
+        in: query
+        format: uuid
+        required: false
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Returns all resumes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/resume"
+    post:
+      summary: Create a new resume
+      tags:
+      - Documents
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Creates a resume
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                personId:
+                  type: string
+                  format: uuid
+                anonymized:
+                  type: boolean
+                documentKind:
+                  type: string
+                  enum:
+                  - pdf
+                checks:
+                  type: array
+                  items:
+                    type: string
+                    enum:
+                    - background
+                    - drug
+                pageLimit:
+                  type: integer
+                  minimum: 1
+              required:
+              - person_id
+  "/documents/resumes/{id}":
+    get:
+      summary: Download a resume
+      tags:
+      - Documents
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Download a file
+  "/documents/screeners":
+    get:
+      summary: Get all screeners
+      tags:
+      - Documents
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: person_id
+        in: query
+        format: uuid
+        required: false
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Returns all resumes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/screener"
+    post:
+      summary: Create a new screener
+      tags:
+      - Documents
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Returns the answers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                screenerAnswersId:
+                  type: string
+                  format: uuid
+              required:
+              - person_id
+  "/documents/screeners/{id}":
+    get:
+      summary: Download a screener
+      tags:
+      - Documents
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Download a file
+  "/profiles/{seeker_id}/education_experiences":
+    post:
+      summary: Create experience
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: seeker_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Create an experience
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                educationExperience:
+                  type: object
+                  properties:
+                    organization_name:
+                      type: string
+                    title:
+                      type: string
+                    graduation_date:
+                      type: string
+                    gpa:
+                      type: string
+                    activities:
+                      type: string
+              required:
+              - educationExperience
+  "/profiles/{seeker_id}/education_experiences/{id}":
+    put:
+      summary: Update experience
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: seeker_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Adds an experience
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                educationExperience:
+                  type: object
+                  properties:
+                    organization_name:
+                      type: string
+                    title:
+                      type: string
+                    graduation_date:
+                      type: string
+                    gpa:
+                      type: string
+                    activities:
+                      type: string
+              required:
+              - educationExperience
+    delete:
+      summary: Remove experience
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: seeker_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Removes a experience
+  "/employer_invites":
+    post:
+      summary: Create an invite
+      tags:
+      - Invite
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Create an invite
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                employer_id:
+                  type: string
+                  format: uuid
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+              required:
+              - email
+              - employer_id
+              - first_name
+              - last_name
+    get:
+      summary: Get all invites
+      tags:
+      - Invite
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Returns invites
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/employer_invite"
+  "/employer_invites/{id}/used":
+    put:
+      summary: Use an invite
+      tags:
+      - Invite
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Uses an invite
+  "/employers/applicants/{id}":
+    put:
+      summary: Update an applicants status
+      tags:
+      - Employers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Applicant updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - new
+                  - pending intro
+                  - intro made
+                  - interviewing
+                  - hire
+                  - pass
+                reasons:
+                  nullable: true
+                  type: array
+                  items:
+                    oneOf:
+                    - type: string
+                    - type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        response:
+                          type: string
+                          format: uuid
+              required:
+              - status
+  "/employers/jobs":
+    get:
+      summary: Retrieve employer jobs
+      tags:
+      - Employers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: jobs retrieved
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  jobs:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                          format: uuid
+                        employerId:
+                          type: string
+                          format: uuid
+                        employerName:
+                          type: string
+                        name:
+                          type: string
+                        description:
+                          type: string
+                  applicants:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/employer_applicants"
+                required:
+                - jobs
+                - applicants
+  "/employers":
+    post:
+      summary: Create an employer
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Request employer create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                location:
+                  type: string
+                bio:
+                  type: string
+                logoUrl:
+                  type: string
+              required:
+              - name
+              - location
+              - bio
+              - logoUrl
+    get:
+      summary: Get all employers
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Retrieve all employers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/employer"
+  "/employers/{id}":
+    put:
+      summary: Update an employer
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Request employer updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                location:
+                  type: string
+                bio:
+                  type: string
+                logoUrl:
+                  type: string
+              required:
+              - name
+              - location
+              - bio
+              - logoUrl
+    get:
+      summary: Get one employers
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Retrieve one employers
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/employer"
+  "/job_orders/orders/{id}/candidates/{person_id}":
+    put:
+      summary: updates a candidate status
+      tags:
+      - Job Orders
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: person_id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '204':
+          description: Updates a candidate status
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  enum:
+                  - added
+                  - recommended
+                  - screened
+                  - hired
+                  - rescinded
+              required:
+              - status
+  "/job_orders/jobs":
+    get:
+      summary: get all job
+      tags:
+      - Job Orders
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Returns all job orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/job_order_job"
+  "/job_orders/orders/{order_id}/notes":
+    post:
+      summary: create a new note
+      tags:
+      - Job Orders
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: order_id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Create a new note
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+              required:
+              - note
+  "/job_orders/orders/{order_id}/notes/{id}":
+    put:
+      summary: update a note
+      tags:
+      - Job Orders
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: order_id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Update a note
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                note:
+                  type: string
+              required:
+              - note
+    delete:
+      summary: delete a note
+      tags:
+      - Job Orders
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: order_id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Remove a note
+  "/job_orders/orders":
+    get:
+      summary: get all job orders
+      tags:
+      - Job Orders
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Returns all job orders
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/job_order_summary"
+    post:
+      summary: create a new job order
+      tags:
+      - Job Orders
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Create the job order
+        '400':
+          description: Already active job order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                jobId:
+                  type: string
+                  format: uuid
+              required:
+              - job_id
+  "/job_orders/orders/{id}":
+    get:
+      summary: get a job order
+      tags:
+      - Job Orders
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '404':
+          description: Job Order not found
+        '200':
+          description: Returns all job orders
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/job_order"
+    put:
+      summary: update a job order
+      tags:
+      - Job Orders
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '404':
+          description: Job Order not found
+        '202':
+          description: Update the job order
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                orderOount:
+                  type: integer
+              required:
+              - order_count
+  "/job_orders/orders/{id}/activate":
+    post:
+      summary: activate a job order
+      tags:
+      - Job Orders
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: activation accepted
+        '400':
+          description: Already active job order
+  "/job_orders/orders/{id}/close_not_filled":
+    post:
+      summary: activate a job order
+      tags:
+      - Job Orders
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '404':
+          description: Job Order not found
+        '202':
+          description: close not filled accepted
+  "/jobs/{id}":
+    get:
+      summary: Show a job
+      tags:
+      - Seeker
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: Retreives a job
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/job"
+        '404':
+          description: Job not found
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/not_found"
+  "/jobs/{id}/apply":
+    post:
+      summary: Apply to a job
+      tags:
+      - Seeker
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Applies to a job
+        '404':
+          description: Job not found job
+  "/jobs/{id}/elevator_pitch":
+    post:
+      summary: Provide an elevator pitch for an application
+      tags:
+      - Seeker
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Add elevator pitch
+        '404':
+          description: Job not found job
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                elevator_pitch:
+                  type: string
+              required:
+              - elevator_pitch
+  "/onboarding_sessions":
+    post:
+      summary: Create new onboarding session
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Create an experience
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                first_name:
+                  type: string
+                last_name:
+                  type: string
+                phone_number:
+                  type: string
+                date_of_birth:
+                  type: string
+              required:
+              - first_name
+              - last_name
+              - phone_number
+              - date_of_birth
+    get:
+      summary: Get the onboarding session
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Returns the onboarding session
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/onboarding_session"
+    put:
+      summary: Update a onboarding session
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '400':
+          description: Bad request no seeker
+          content:
+            application/json:
+              schema:
+                schema:
+                  type: object
+                  properties:
+                    error:
+                      type: string
+        '200':
+          description: Update the onboarding session
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/onboarding_session"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                onboarding_session:
+                  type: object
+              required:
+              - onboarding_session
+  "/one_user":
+    get:
+      summary: The current user
+      tags:
+      - Seeker
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Retrieve user
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/one_user"
+  "/profiles/{seeker_id}/other_experiences":
+    post:
+      summary: Create experience
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: seeker_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Create an experience
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                otherExperience:
+                  type: object
+                  properties:
+                    organization_name:
+                      type: string
+                    position:
+                      type: string
+                    startDate:
+                      type: string
+                    endDate:
+                      type: string
+                    isCurrent:
+                      type: boolean
+                    description:
+                      type: string
+              required:
+              - otherExperience
+  "/profiles/{seeker_id}/other_experiences/{id}":
+    put:
+      summary: Update experience
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: seeker_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Adds an experience
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                otherExperience:
+                  type: object
+                  properties:
+                    organization_name:
+                      type: string
+                    position:
+                      type: string
+                    startDate:
+                      type: string
+                    endDate:
+                      type: string
+                    isCurrent:
+                      type: boolean
+                    description:
+                      type: string
+              required:
+              - otherExperience
+    delete:
+      summary: Remove experience
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: seeker_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Removes a experience
+  "/profiles/{seeker_id}/personal_experiences":
+    post:
+      summary: Create experience
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: seeker_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Create an experience
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                personalExperience:
+                  type: object
+                  properties:
+                    activity:
+                      type: string
+                    startDate:
+                      type: string
+                    endDate:
+                      type: string
+                    description:
+                      type: string
+              required:
+              - personalExperience
+  "/profiles/{seeker_id}/personal_experiences/{id}":
+    put:
+      summary: Update experience
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: seeker_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Adds an experience
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                personalExperience:
+                  type: object
+                  properties:
+                    activity:
+                      type: string
+                    startDate:
+                      type: string
+                    endDate:
+                      type: string
+                    description:
+                      type: string
+              required:
+              - personalExperience
+    delete:
+      summary: Remove experience
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: seeker_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Removes a experience
+  "/profiles/{id}":
+    get:
+      summary: Retrieve a seeker
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '404':
+          description: Seeker not found
+        '200':
+          description: profiles retrieved
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/seeker"
+  "/programs/{id}":
+    get:
+      summary: Get a program
+      tags:
+      - Admin
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Retrieves a program
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/program"
+    put:
+      summary: Update ane existing program
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Updates the program
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                trainingProviderId:
+                  type: string
+                  format: uuid
+              required:
+              - name
+              - description
+              - trainingProviderId
+  "/screeners/answers":
+    post:
+      summary: create new answers
+      tags:
+      - Screeners
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Creates new answers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                personId:
+                  type: string
+                  format: uuid
+                screenerQuestionsId:
+                  type: string
+                  format: uuid
+                questionResponses:
+                  type: array
+                  items:
+                    "$ref": "#/components/schemas/question_response"
+              required:
+              - title
+              - screenerQuestionId
+              - questionResponses
+  "/screeners/answers/{id}":
+    get:
+      summary: get a set of answers
+      tags:
+      - Screeners
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '404':
+          description: Job Order not found
+        '200':
+          description: Returns the answers
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/answers"
+    put:
+      summary: update a set of answers
+      tags:
+      - Screeners
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Creates new answers
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                questionResponses:
+                  type: array
+                  items:
+                    "$ref": "#/components/schemas/question_response"
+              required:
+              - title
+              - screenerQuestionId
+              - questionResponses
+  "/screeners/answers/{id}/produce_document":
+    post:
+      summary: request screener document generated
+      tags:
+      - Screeners
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Returns the answers
+  "/screeners/questions":
+    post:
+      summary: create new questions
+      tags:
+      - Screeners
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Creates new questions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                questions:
+                  type: array
+                  items:
+                    type: string
+              required:
+              - title
+              - questions
+  "/screeners/questions/{id}":
+    get:
+      summary: get a set of questions
+      tags:
+      - Screeners
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '404':
+          description: Job Order not found
+        '200':
+          description: Returns the questions
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/questions"
+    put:
+      summary: update a set of questions
+      tags:
+      - Screeners
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Updates the questions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                questions:
+                  type: array
+                  items:
+                    type: string
+              required:
+              - title
+              - questions
+  "/seekers/jobs":
+    get:
+      summary: Search jobs
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: utm_term
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: utm_source
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: industries[]
+        in: query
+        style: form
+        explode: true
+        items:
+          type: string
+        required: false
+        schema:
+          type: array
+      - name: tags[]
+        in: query
+        style: form
+        explode: true
+        items:
+          type: string
+        required: false
+        schema:
+          type: array
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: search executed
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/search_job"
+  "/seekers/jobs/{id}/save":
+    post:
+      summary: Save a job
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: saves a job
+  "/seekers/jobs/{id}/unsave":
+    post:
+      summary: Save a job
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: saves a job
+  "/session":
+    post:
+      summary: Indicate a new session started
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Session Started
+  "/profiles/{profile_id}/skills":
+    post:
+      summary: Creates a skill
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: profile_id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: skill created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                skill:
+                  type: object
+                  required:
+                  - master_skill_id
+                  properties:
+                    masterSkillId:
+                      type: string
+                      format: uuid
+                    description:
+                      type: string
+              required:
+              - skill
+  "/profiles/{profile_id}/skills/{id}":
+    put:
+      summary: Updates a skill
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: profile_id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: skill updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                skill:
+                  type: object
+                  required:
+                  - description
+                  properties:
+                    description:
+                      type: string
+              required:
+              - skill
+    delete:
+      summary: Deletes a skill
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: profile_id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: skill destroyed
+  "/profiles/{profile_id}/stories/{story_id}":
+    delete:
+      summary: Deletes a story
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: profile_id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: story_id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: story deleted
+    put:
+      summary: Updates a story
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: profile_id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: story_id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: story updated
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                story:
+                  type: object
+                  required:
+                  - prompt
+                  - response
+                  properties:
+                    prompt:
+                      type: string
+                    response:
+                      type: string
+              required:
+              - story
+  "/profiles/{profile_id}/stories":
+    post:
+      summary: Creates a story
+      tags:
+      - Seekers
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: profile_id
+        in: path
+        format: uuid
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: story created
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                story:
+                  type: object
+                  required:
+                  - prompt
+                  - response
+                  properties:
+                    prompt:
+                      type: string
+                    response:
+                      type: string
+              required:
+              - story
+  "/teams/teams":
+    get:
+      summary: get all teams
+      tags:
+      - Teams
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Returns all teams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/team"
+  "/test/create_user":
+    post:
+      summary: Create test user
+      tags:
+      - Test
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: Create test user
+          content:
+            application/json:
+              schema:
+                type: object
+  "/test/create_coach":
+    post:
+      summary: Create test coach
+      tags:
+      - Test
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: Create test coach
+          content:
+            application/json:
+              schema:
+                type: object
+  "/test/create_seeker":
+    post:
+      summary: Create test seeker
+      tags:
+      - Test
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: Create test seeker
+          content:
+            application/json:
+              schema:
+                type: object
+  "/test/create_job":
+    post:
+      summary: Create test job
+      tags:
+      - Test
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: Create test job
+          content:
+            application/json:
+              schema:
+                type: object
+  "/test/create_recruiter_with_applicant":
+    post:
+      summary: Create test recruiter with applicant
+      tags:
+      - Test
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: Create test recruiter with applicant
+          content:
+            application/json:
+              schema:
+                type: object
+  "/test/create_test_trainer_with_student":
+    post:
+      summary: Create test trainer with student
+      tags:
+      - Test
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: Create test trainer with student
+          content:
+            application/json:
+              schema:
+                type: object
+  "/test/create_seeker_lead":
+    post:
+      summary: Create seeker lead
+      tags:
+      - Test
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: Create seeker lead
+          content:
+            application/json:
+              schema:
+                type: object
+  "/test/create_active_seeker":
+    post:
+      summary: Create active seeker
+      tags:
+      - Test
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: Create active seeker
+          content:
+            application/json:
+              schema:
+                type: object
+  "/test/assert_no_failed_jobs":
+    get:
+      summary: Assert job failure status
+      tags:
+      - Test
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '204':
+          description: No failed jobs
+        '200':
+          description: failed jobs
+  "/test/jobs_settled":
+    get:
+      summary: Asserts jobs have settled
+      tags:
+      - Test
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '200':
+          description: settled status
+  "/training_provider_invites":
+    post:
+      summary: Create an Training Provider Invite
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Creates an invite
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                firstName:
+                  type: string
+                lastName:
+                  type: string
+                roleDescription:
+                  type: string
+                trainingProviderId:
+                  type: string
+                  format: uuid
+              required:
+              - email
+              - firstName
+              - lastName
+              - roleDescription
+              - trainingProviderId
+    get:
+      summary: Get all invites
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Retrieves a program
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/training_provider_invite"
+  "/training_provider_invites/{id}/used":
+    put:
+      summary: Use a Training Provider Invite
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '202':
+          description: Uses the invite
+  "/training_providers/{id}/programs":
+    post:
+      summary: Create a program
+      tags:
+      - Admin
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      security:
+      - bearer_auth: []
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Creates a program
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+                trainingProviderId:
+                  type: string
+                  format: uuid
+              required:
+              - name
+              - description
+              - trainingProviderId
+  "/training_providers":
+    post:
+      summary: Create a Training Provider
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '201':
+          description: Creates an invite
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                trainingProvider:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    description:
+                      type: string
+                  required:
+                  - name
+                  - description
+              required:
+              - training_provider
+    get:
+      summary: Get all Training Providers
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Retrieves all training provider
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/training_provider"
+  "/training_providers/{id}":
+    get:
+      summary: Get a training provider
+      tags:
+      - Admin
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: Key-Inflection
+        in: header
+        schema:
+          type: string
+          enum:
+          - camel
+          - dash
+          - snake
+          - pascale
+      responses:
+        '401':
+          description: unauthenticated
+        '200':
+          description: Retrieves the training provider
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/training_provider"
+servers:
+- url: https://{defaultHost}
+  variables:
+    defaultHost:
+      default: www.example.com
+components:
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+  schemas:
+    applicant:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        elevatorPitch:
+          type: string
+          nullable: true
+        jobId:
+          type: string
+          format: uuid
+        seekerId:
+          type: string
+          format: uuid
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    employer_applicants:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        jobId:
+          type: string
+          format: uuid
+        chatEnabled:
+          type: boolean
+        certifiedBy:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        jobName:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phoneNumber:
+          type: string
+          nullable: true
+        profileLink:
+          type: string
+        programs:
+          type: array
+        statusReason:
+          type: string
+          nullable: true
+        status:
+          type: string
+    employer_invite:
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        usedAt:
+          type: string
+          format: date-time
+          nullable: true
+        employerName:
+          type: string
+        link:
+          type: string
+    questions:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        questions:
+          type: array
+          items:
+            type: string
+    answers:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        personId:
+          type: string
+          format: uuid
+        screenerQuestionsId:
+          type: string
+          format: uuid
+        questionResponses:
+          type: array
+          items:
+            "$ref": "#/components/schemas/question_response"
+    question_response:
+      type: object
+      properties:
+        question:
+          type: string
+        response:
+          type: string
+    resume:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        anonymized:
+          type: boolean
+        status:
+          type: string
+          enum:
+          - processing
+          - succeeded
+          - failed
+        generateAt:
+          type: string
+          format: date-time
+        documentKind:
+          type: string
+          enum:
+          - pdf
+        personId:
+          type: string
+          format: uuid
+    screener:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        status:
+          type: string
+          enum:
+          - processing
+          - succeeded
+          - failed
+        generateAt:
+          type: string
+          format: date-time
+        documentKind:
+          type: string
+          enum:
+          - pdf
+        personId:
+          type: string
+          format: uuid
+    training_provider_invite:
+      type: object
+      properties:
+        email:
+          type: string
+        firstName:
+          type: string
+        lastName:
+          type: string
+        usedAt:
+          type: string
+          format: date-time
+          nullable: true
+        trainingProviderId:
+          type: string
+          format: uuid
+        trainingProviderName:
+          type: string
+        roleDescription:
+          type: string
+        link:
+          type: string
+    one_user:
+      id:
+        type: string
+        format: uuid
+      firstName:
+        type: string
+        nullable: true
+      lastName:
+        type: string
+        nullable: true
+      email:
+        type: string
+        nullable: true
+      onboarding_session:
+        type: object
+        properties:
+          seekerId:
+            type: string
+            format: date-time
+            nullable: true
+      user_roles:
+        type: array
+        items:
+          type: object
+          properties:
+            role:
+              type: object
+              properties:
+                type: string
+                enum:
+                - admin
+                - coach
+                - job_order_admin
+                - employer_admin
+      notifications:
+        type: object
+        properties:
+          notificationTitle:
+            type: string
+            nullable: true
+          notificationBody:
+            type: string
+            nullable: true
+          read:
+            type: boolean
+          url:
+            type: boolean
+            nullable: true
+      profile:
+        id:
+          type: string
+          format: uuid
+          nullable: true
+        about:
+          type: string
+          nullable: true
+        userId:
+          type: string
+          format: uuid
+          nullable: true
+        missingProfileItems:
+          type: string
+          enum:
+          - education
+          - work
+        recruiter:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+          nullable: true
+        trainingProviderProfile:
+          type: object
+          properties:
+            id:
+              type: string
+              format: uuid
+          nullable: true
+    onboarding_session:
+      type: object
+      properties:
+        seekerId:
+          type: string
+          format: uuid
+          nullable: true
+        personId:
+          type: string
+          format: uuid
+          nullable: true
+        nextStep:
+          type: string
+          enum:
+          - start
+          - reliability
+          - employment
+          - education
+          - training
+          - opportunities
+          - complete_loading
+          - complete
+        progress:
+          type: integer
+    reminder:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        note:
+          type: string
+        state:
+          type: string
+          enum:
+          - set
+          - complete
+        reminderAt:
+          type: string
+          format: date-time
+        contextId:
+          type: string
+          format: uuid
+          nullable: true
+    seeker:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        about:
+          type: string
+        userId:
+          type: string
+          format: uuid
+        educationExperiences:
+          type: array
+          items:
+            "$ref": "#/components/schemas/education_experience"
+        isProfileEditor:
+          type: boolean
+        otherExperiences:
+          type: array
+          items:
+            "$ref": "#/components/schemas/other_experience"
+        personalExperience:
+          type: array
+          items:
+            "$ref": "#/components/schemas/personal_experience"
+        profileSkills:
+          type: array
+          items:
+            "$ref": "#/components/schemas/profile_skill"
+        reference:
+          type: array
+          items:
+            "$ref": "#/components/schemas/reference_with_training_provider"
+        stories:
+          type: array
+          items:
+            "$ref": "#/components/schemas/stories"
+        missingProfileItems:
+          type: array
+          items:
+            type: string
+            enum:
+            - education
+            - work
+        user:
+          "$ref": "#/components/schemas/user"
+    lead:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        assignedCoach:
+          type: string
+        email:
+          type: string
+          format: email
+          nullable: true
+        phoneNumber:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+        lastName:
+          type: string
+        leadCapturedAt:
+          type: string
+          format: date-time
+          nullable: true
+        leadCapturedBy:
+          type: string
+          format: email
+          nullable: true
+        kind:
+          type: string
+          enum:
+          - seeker
+          - lead
+        status:
+          type: string
+          enum:
+          - new
+    coach_seeker_table:
+      type: object
+      additionalProperties: true
+      properties:
+        id:
+          type: string
+        seekerId:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        email:
+          type: string
+          format: email
+          nullable: true
+        phoneNumber:
+          type: string
+          nullable: true
+        lastActiveOn:
+          type: string
+          format: date-time
+          nullable: true
+        lastContacted:
+          oneOf:
+          - type: string
+            format: date-time
+          - type: string
+            enum:
+            - Never
+          nullable: true
+        certifiedBy:
+          type: string
+          nullable: true
+        assignedCoach:
+          type: string
+        barriers:
+          type: array
+          items:
+            "$ref": "#/components/schemas/seeker_barrier"
+    coach_seeker:
+      allOf:
+      - "$ref": "#/components/schemas/coach_seeker_table"
+      - type: object
+        additionalProperties: true
+        properties:
+          applications:
+            type: array
+            items:
+              "$ref": "#/components/schemas/seeker_application"
+          kind:
+            type: string
+            enum:
+            - seeker
+            - lead
+          notes:
+            type: array
+            items:
+              "$ref": "#/components/schemas/seeker_note"
+          jobRecommendations:
+            type: array
+            items:
+              type: string
+              format: uuid
+    seeker_barrier:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          format: uuid
+    seeker_note:
+      type: object
+      properties:
+        note:
+          type: string
+        noteId:
+          type: string
+          format: uuid
+        noteTakenBy:
+          type: string
+          nullable: true
+        date:
+          type: string
+          format: date-time
+    seeker_application:
+      type: object
+      properties:
+        status:
+          type: string
+        employerName:
+          type: string
+        jobId:
+          type: string
+          format: uuid
+          nullable: true
+        employmentTitle:
+          type: string
+          nullable: true
+    other_experience:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        organizationName:
+          type: string
+        position:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        isCurrent:
+          type: boolean
+        description:
+          type: string
+    education_experience:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        organizationName:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        graduationDate:
+          type: string
+          nullable: true
+        gpa:
+          type: string
+          nullable: true
+        activities:
+          type: string
+          nullable: true
+    personal_experience:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        activity:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+        description:
+          type: string
+    profile_skill:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        description:
+          type: string
+          nullable: true
+        masterSkill:
+          "$ref": "#/components/schemas/master_skill"
+    master_skill:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        skill:
+          type: string
+        type:
+          type: string
+          enum:
+          - TECHNICAL
+          - PERSONAL
+    search_job:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        category:
+          type: string
+          enum:
+          - marketplace
+          - staffing
+        location:
+          type: string
+        employmentTitle:
+          type: string
+        industries:
+          type: array
+          items:
+            type: string
+            enum:
+            - manufacturing
+            - construction
+            - healthcare
+            - logistics
+        startingPay:
+          type: object
+          nullable: true
+          properties:
+            employmentType:
+              type: string
+              enum:
+              - salary
+              - hourly
+            upperLimit:
+              type: integer
+            lowerLimit:
+              type: integer
+        tags:
+          type: array
+          item:
+            type: string
+        applicationStatus:
+          type: string
+          enum:
+          - new
+          - pending intro
+          - intro made
+          - interviewing
+          - hire
+          - pass
+          nullable: true
+        elevatorPitch:
+          type: string
+          nullable: true
+        saved:
+          type: boolean
+          nullable: true
+        employer:
+          "$ref": "#/components/schemas/search_employer"
+    search_employer:
+      type: object
+      additionalProperties: true
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        logoUrl:
+          type: string
+          nullable: true
+    employer:
+      allOf:
+      - "$ref": "#/components/schemas/search_employer"
+      - type: object
+        additionalProperties: true
+        properties:
+          location:
+            type: string
+            nullable: true
+          bio:
+            type: string
+          createdAt:
+            type: string
+            format: date-time
+    admin_job:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        benefitsDescription:
+          type: string
+        responsibilitiesDescription:
+          type: string
+          nullable: true
+        employmentTitle:
+          type: string
+        location:
+          type: string
+        employmentType:
+          type: string
+          enum:
+          - FULLTIME
+          - PARTTIME
+        hideJob:
+          type: boolean
+        schedule:
+          type: string
+          nullable: true
+        workDays:
+          type: string
+          nullable: true
+        requirementsDescription:
+          type: string
+          nullable: true
+        createdAt:
+          type: string
+          format: date-time
+        category:
+          type: string
+        employer:
+          "$ref": "#/components/schemas/employer"
+        industry:
+          type: array
+          items:
+            type: string
+        jobAttributes:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              acceptibleSet:
+                type: array
+                items:
+                  type: string
+              attributeId:
+                type: string
+                format: uuid
+              attributeName:
+                type: string
+        learnedSkills:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              masterSkill:
+                "$ref": "#/components/schemas/master_skill"
+        desiredSkills:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              masterSkill:
+                "$ref": "#/components/schemas/master_skill"
+        desiredCertifications:
+          id:
+            type: string
+            format: uuid
+          masterCertification:
+            "$ref": "#/components/schemas/master_certification"
+        careerPaths:
+          type: array
+          items:
+            "$ref": "#/components/schemas/career_path"
+        jobPhotos:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              photoUrl:
+                type: string
+              jobId:
+                type: string
+        jobTag:
+          type: array
+          items:
+            id:
+              type: string
+              format: uuid
+            tag:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                name:
+                  type: string
+        numberOfApplicants:
+          type: integer
+        testimonials:
+          type: array
+          items:
+            "$ref": "#/components/schemas/testimonial"
+    job:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        benefitsDescription:
+          type: string
+        responsibilitiesDescription:
+          type: string
+          nullable: true
+        employmentTitle:
+          type: string
+        location:
+          type: string
+        employmentType:
+          type: string
+          enum:
+          - FULLTIME
+          - PARTTIME
+        schedule:
+          type: string
+          nullable: true
+        workDays:
+          type: string
+          nullable: true
+        requirementsDescription:
+          type: string
+          nullable: true
+        category:
+          type: string
+        employer:
+          "$ref": "#/components/schemas/employer"
+        learnedSkills:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              masterSkill:
+                "$ref": "#/components/schemas/master_skill"
+        desiredSkills:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              masterSkill:
+                "$ref": "#/components/schemas/master_skill"
+        desiredCertifications:
+          id:
+            type: string
+            format: uuid
+          masterCertification:
+            "$ref": "#/components/schemas/master_certification"
+        careerPaths:
+          type: array
+          items:
+            "$ref": "#/components/schemas/career_path"
+        applicationStatus:
+          type: string
+          enum:
+          - new
+          - pending intro
+          - intro made
+          - interviewing
+          - hire
+          - pass
+          nullable: true
+        jobPhotos:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              photoUrl:
+                type: string
+              jobId:
+                type: string
+        jobTag:
+          type: array
+          items:
+            id:
+              type: string
+              format: uuid
+            tag:
+              type: object
+              properties:
+                id:
+                  type: string
+                  format: uuid
+                name:
+                  type: string
+        testimonials:
+          type: array
+          items:
+            "$ref": "#/components/schemas/testimonial"
+    job_order_summary:
+      type: object
+      additionalProperties: true
+      properties:
+        id:
+          type: string
+          format: uuid
+        jobId:
+          type: string
+          format: uuid
+        employmentTitle:
+          type: string
+        employerName:
+          type: string
+        openedAt:
+          type: string
+          format: date-time
+        closedAt:
+          type: string
+          format: date-time
+          nullable: true
+        orderCount:
+          type: integer
+        hireCount:
+          type: integer
+        recommendedCount:
+          type: integer
+        status:
+          type: string
+          enum:
+          - needs_order_count
+          - needs_criteria
+          - open
+          - candidates_screened
+          - filled
+          - not_filled
+          - waiting_on_employer
+        teamId:
+          type: string
+          format: uuid
+          nullable: true
+    job_order:
+      allOf:
+      - "$ref": "#/components/schemas/job_order_summary"
+      - type: object
+        additionalProperties: true
+        properties:
+          benefitsDescription:
+            type: string
+            nullable: true
+          requirementsDescription:
+            type: string
+            nullable: true
+          responsibilitiesDescription:
+            type: string
+            nullable: true
+          candidates:
+            type: array
+            items:
+              "$ref": "#/components/schemas/job_order_candidate"
+          notes:
+            type: array
+            items:
+              "$ref": "#/components/schemas/job_order_note"
+    job_order_candidate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        appliedAt:
+          type: string
+          format: date-time
+          nullable: true
+        recommendedAt:
+          type: string
+          format: date-time
+          nullable: true
+        recommendedBy:
+          type: string
+          nullable: true
+        status:
+          type: string
+          enum:
+          - added
+          - recommended
+          - screened
+          - hired
+          - rescinded
+        personId:
+          type: string
+          format: uuid
+    job_order_note:
+      type: object
+      properties:
+        noteId:
+          type: string
+          format: uuid
+        note:
+          type: string
+        date:
+          type: string
+          format: date-time
+        noteTakenBy:
+          type: string
+    job_order_job:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        employerName:
+          type: string
+        employerId:
+          type: string
+          format: uuid
+        employmentTitle:
+          type: string
+    master_certification:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        certification:
+          type: string
+    career_path:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        upperLimit:
+          type: string
+        lowerLimit:
+          type: string
+        order:
+          type: integer
+    testimonial:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        title:
+          type: string
+        testimonial:
+          type: string
+        photoUrl:
+          type: string
+    user:
+      type: object
+      additionalProperties: true
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+          format: email
+        firstName:
+          type: string
+        lastName:
+          type: string
+        zipCode:
+          type: string
+          nullable: true
+        phoneNumber:
+          type: string
+          nullable: true
+    seeker_training_provider:
+      type: object
+      properties:
+        programId:
+          type: string
+          format: uuid
+        trainingProviderId:
+          type: string
+          format: uuid
+    program:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        trainingProviderId:
+          type: string
+          format: uuid
+        trainingProviderName:
+          type: string
+    reference:
+      type: object
+      additionalProperties: true
+      properties:
+        referenceText:
+          type: string
+    training_provider:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        programs:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+                format: uuid
+              name:
+                type: string
+              description:
+                type: string
+    reference_training_provider:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          format: uuid
+    reference_with_training_provider:
+      allOf:
+      - "$ref": "#/components/schemas/reference"
+      - type: object
+        additionalProperties: true
+        properties:
+          trainingProvider:
+            "$ref": "#/components/schemas/reference_training_provider"
+          authorUser:
+            "$ref": "#/components/schemas/user"
+    team:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+    not_found:
+      type: object
+      properties:
+        error:
+          type: string
+          enum:
+          - Resource not found

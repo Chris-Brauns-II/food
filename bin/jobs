@@ -1,0 +1,3 @@
+#bin/bash
+
+OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES COUNT=2 QUEUE=* rake resque:workers

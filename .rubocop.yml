@@ -1,0 +1,20 @@
+# TODO add these
+require:
+  - rubocop-rails
+  - rubocop-factory_bot
+#  - rubocop-rspec
+
+inherit_from: .rubocop_todo.yml
+
+AllCops:
+  NewCops: enable
+
+Rails/SkipsModelValidations:
+  Exclude:
+    - app/services/analytics/analytics_aggregator.rb
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/ClassLength:
+  Enabled: false

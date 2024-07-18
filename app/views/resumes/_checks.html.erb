@@ -1,0 +1,16 @@
+<% if @checks.length > 0 %>
+  <div class="flex-column flex-start full-width nobreak">
+    <div class="flex-row flex-center flex-gap">
+      <%= render "resumes/checklist" %>
+    <h2 class="faded normal-weight">Checks</h2>
+    </div>
+    <ul>
+      <% if @checks.include?(Documents::Checks::BACKGROUND) %>
+        <li>Background Check - Clear</li>
+      <% end %>
+      <% if @checks.include?(Documents::Checks::DRUG) %>
+        <li>Drug Test (12-panel)- Clean</li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
